@@ -75,17 +75,17 @@ contract VoteManager {
         return candidateNames;
     }
 
-    // function getCandidatsForBallot(uint ballotIndex) public view returns(bytes32[] memory names, uint[] memory voteCounts) {
-    //     bytes32[] memory candidateNames = new bytes32[](ballots[ballotIndex].candidatesSize);
-    //     uint[] memory candidatesVotes = new uint[](ballots[ballotIndex].candidatesSize);
-    //     for(uint i = 0; i < candidateNames.length; i++)
-    //     {
-    //         candidateNames[i] = ballots[ballotIndex].candidates[i].name;
-    //         candidatesVotes[i] = ballots[ballotIndex].candidates[i].voteCount;
-    //     }
+    function getCandidatsForBallot(uint ballotIndex) public view returns(bytes32[] memory names, uint[] memory voteCounts) {
+        bytes32[] memory candidateNames = new bytes32[](ballots[ballotIndex].candidatesSize);
+        uint[] memory candidatesVotes = new uint[](ballots[ballotIndex].candidatesSize);
+        for(uint i = 0; i < candidateNames.length; i++)
+        {
+            candidateNames[i] = ballots[ballotIndex].candidates[i].name;
+            candidatesVotes[i] = ballots[ballotIndex].candidates[i].voteCount;
+        }
 
-    //     return candidateNames;
-    // }
+        return (candidateNames, candidatesVotes);
+    }
 
     function getCandidateVoteCount(uint ballot, uint candidate) public view returns(uint) {
         return ballots[ballot].candidates[candidate].voteCount;
