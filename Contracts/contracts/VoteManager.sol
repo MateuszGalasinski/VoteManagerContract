@@ -49,6 +49,22 @@ contract VoteManager {
         }
     }
 
+    function createBallot(bytes32[] candidateNames, uint[] voters) public returns(uint newBallot){
+        uint newIndex = ballots.push(Ballot(true, candidateNames.length));
+        Ballot storage createdBallot = ballots[newIndex - 1];
+        for(uint i = 0; i < candidateNames.length; i++)
+        {
+            createdBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: 0});
+        }
+
+        for(uint v = 0; v < voters.length; v++)
+        {
+            createdBallot.voters[voters[v]] = Voter(true, false);
+        }
+
+        return newIndex;
+    }
+
     function setSystemName(string memory x) public {
         systemName = x;
     }
