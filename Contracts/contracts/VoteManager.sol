@@ -31,8 +31,13 @@ contract VoteManager {
         candidateNames[0] = "A"; 
         candidateNames[1] = "B"; 
 
-        uint[] memory voters = new uint[](1);
+        // mocks
+        uint[] memory voters = new uint[](100);
         voters[0] = 210183;
+        for(uint j = 0; j < 100; j++)
+        {
+            voters[j] = j;
+        }
 
         //create new ballot
         ballots.push(Ballot(true, 2));
@@ -49,7 +54,7 @@ contract VoteManager {
         }
     }
 
-    function createBallot(bytes32[] candidateNames, uint[] voters) public returns(uint newBallot){
+    function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public returns(uint newBallot){
         uint newIndex = ballots.push(Ballot(true, candidateNames.length));
         Ballot storage createdBallot = ballots[newIndex - 1];
         for(uint i = 0; i < candidateNames.length; i++)
