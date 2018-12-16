@@ -53,12 +53,13 @@ contract VoteManager {
         systemName = x;
     }
 
+    //TODO: possible security issue 
     function vote(uint ballotId, uint voterId, uint candidateId) public {
-        if(ballots[ballotId].voters[voterId].isAllowed && !ballots[ballotId].voters[voterId].hasVoted)
-        {
-            ballots[ballotId].voters[voterId].hasVoted = true;
-            ballots[ballotId].candidates[candidateId].voteCount++;
-        }
+        require(ballots[ballotId].voters[voterId].isAllowed, "There is no such voter.");
+        require(!ballots[ballotId].voters[voterId].hasVoted, "This voter has already voted.");
+
+        ballots[ballotId].voters[voterId].hasVoted = true;
+        ballots[ballotId].candidates[candidateId].voteCount++;
     }
 
     function endBallot(uint id) public onlyOwner {
