@@ -66,6 +66,17 @@ contract VoteManager {
         ballots[id].isActive = false;
     }
 
+    function getBallots() public view returns(bool[] memory states, uint[] memory candidatesSizes) {
+        bool[] memory ballotsState = new bool[](ballots.length);
+        uint[] memory ballotsCandidatesSizes = new uint[](ballots.length);
+        for(uint i = 0; i < ballots.length; i++)
+        {
+            ballotsState[i] = ballots[i].isActive;
+            ballotsCandidatesSizes[i] = ballots[i].candidatesSize;
+        }
+        return (ballotsState, ballotsCandidatesSizes);
+    }
+
     function getCandidateNamesForBallot(uint ballotIndex) public view returns(bytes32[] memory) {
         bytes32[] memory candidateNames = new bytes32[](ballots[ballotIndex].candidatesSize);
         for(uint i = 0; i < candidateNames.length; i++)
