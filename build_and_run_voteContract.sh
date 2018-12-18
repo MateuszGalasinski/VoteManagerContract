@@ -1,3 +1,5 @@
+#!/bin/sh
+
 git pull
 
 docker build -t vote-manager/vote-contracts .
