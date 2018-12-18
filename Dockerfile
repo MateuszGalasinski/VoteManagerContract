@@ -1,6 +1,5 @@
 FROM trufflesuite/ganache-cli:latest as runtime
 
-RUN apk add --no-cache
 RUN npm install -g truffle 
 
 WORKDIR /app
