@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 contract VoteManager {
     string public systemName = "TUL vote system";
     address public owner;
+    uint public lastBallotIndex = 0;
 
     struct Voter {
         bool isAllowed;
@@ -54,7 +55,7 @@ contract VoteManager {
         }
     }
 
-    function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public returns(uint newBallot){
+    function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public{
         uint newIndex = ballots.push(Ballot(true, candidateNames.length));
         Ballot storage createdBallot = ballots[newIndex - 1];
         for(uint i = 0; i < candidateNames.length; i++)
@@ -67,7 +68,7 @@ contract VoteManager {
             createdBallot.voters[voters[v]] = Voter(true, false);
         }
 
-        return newIndex;
+        lastBallotIndex = newIndex;
     }
 
     function setSystemName(string memory x) public {
