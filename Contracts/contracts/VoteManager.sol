@@ -35,12 +35,12 @@ contract VoteManager {
         // mocks
         uint[] memory voters = new uint[](100);
         voters[0] = 210183;
-        for(uint j = 0; j < 100; j++)
+        for(uint j = 1; j < 10; j++)
         {
             voters[j] = j;
         }
 
-        //create new ballot
+        //create new active ballot
         ballots.push(Ballot(true, 2));
         Ballot storage createdBallot = ballots[ballots.length - 1];
 
@@ -53,6 +53,22 @@ contract VoteManager {
         {
             createdBallot.voters[voters[v]] = Voter(true, false);
         }
+
+        //create new already ended ballot
+        ballots.push(Ballot(true, 2));
+        Ballot storage endedBallot = ballots[ballots.length - 1];
+
+        for(i = 0; i < 2; i++)
+        {
+            endedBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: i*3 + 10});
+        }
+
+        for(v = 0; v < voters.length; v++)
+        {
+            endedBallot.voters[voters[v]] = Voter(true, false);
+        }
+
+        endedBallot.isActive = false;
     }
 
     function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public{
