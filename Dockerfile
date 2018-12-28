@@ -1,4 +1,4 @@
-FROM trufflesuite/ganache-cli:latest as runtime
+FROM trufflesuite/ganache-cli:v6.2.0 as runtime
 
 RUN npm install -g truffle 
 

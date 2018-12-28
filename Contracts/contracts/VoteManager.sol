@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 contract VoteManager {
     string public systemName = "TUL vote system";
@@ -33,9 +33,9 @@ contract VoteManager {
         candidateNames[1] = "B"; 
 
         // mocks
-        uint[] memory voters = new uint[](100);
+        uint[] memory voters = new uint[](5);
         voters[0] = 210183;
-        for(uint j = 1; j < 10; j++)
+        for(uint j = 1; j < 5; j++)
         {
             voters[j] = j;
         }
@@ -55,20 +55,20 @@ contract VoteManager {
         }
 
         //create new already ended ballot
-        ballots.push(Ballot(true, 2));
-        Ballot storage endedBallot = ballots[ballots.length - 1];
+        // ballots.push(Ballot(true, 2));
+        // Ballot storage endedBallot = ballots[ballots.length - 1];
 
-        for(i = 0; i < 2; i++)
-        {
-            endedBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: i*3 + 10});
-        }
+        // for(uint i = 0; i < 2; i++)
+        // {
+        //     endedBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: i*3 + 10});
+        // }
 
-        for(v = 0; v < voters.length; v++)
-        {
-            endedBallot.voters[voters[v]] = Voter(true, false);
-        }
+        // for(uint v = 0; v < voters.length; v++)
+        // {
+        //     endedBallot.voters[voters[v]] = Voter(true, false);
+        // }
 
-        endedBallot.isActive = false;
+        // endedBallot.isActive = false;
     }
 
     function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public{
