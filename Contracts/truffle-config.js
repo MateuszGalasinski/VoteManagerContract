@@ -17,7 +17,7 @@ module.exports = {
     development: {
       host: "localhost",
       port: 8545,
-      network_id: 4466 
+      network_id: "*"
     }
   },
   compilers: {
@@ -25,4 +25,7 @@ module.exports = {
       version: "0.5.0",
     },
   },
+  mocha: {
+    useColors: true
+  }
 };

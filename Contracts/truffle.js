@@ -17,12 +17,17 @@ module.exports = {
     development: {
       host: "localhost",
       port: 8545,
-      network_id: "*" // Match any network id
+      network_id: "*",
+      from: "0f6077b914cd45c6326355e089ca9b8627ddf06f"
     }
   },
   compilers: {
     solc: {
       version: "0.5.0",
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
     },
   },
 };

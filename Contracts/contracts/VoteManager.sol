@@ -3,7 +3,20 @@ pragma solidity ^0.5.0;
 contract VoteManager {
     string public systemName = "TUL vote system";
     address public owner;
-    uint public lastBallotIndex = 0;
+    Ballot[] public ballots;
+
+    event BallotCreation (
+        uint indexed ballot
+    );
+
+    event BallotEnd (
+        uint indexed ballot
+    );
+
+    event Voted (
+        uint indexed ballot,
+        uint indexed candidate
+    );
 
     struct Voter {
         bool isAllowed;
@@ -22,53 +35,9 @@ contract VoteManager {
         mapping(uint => Voter) voters;  //key means voter id (e.g. 210210)
     }
 
-    Ballot[] public ballots;
 
     constructor() public {
         owner = msg.sender;
-
-        // rest of the constructor is only example ballot;
-        bytes32[] memory candidateNames = new bytes32[](2);
-        candidateNames[0] = "A"; 
-        candidateNames[1] = "B"; 
-
-        // mocks
-        uint[] memory voters = new uint[](5);
-        voters[0] = 210183;
-        for(uint j = 1; j < 5; j++)
-        {
-            voters[j] = j;
-        }
-
-        //create new active ballot
-        ballots.push(Ballot(true, 2));
-        Ballot storage createdBallot = ballots[ballots.length - 1];
-
-        for(uint i = 0; i < 2; i++)
-        {
-            createdBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: 0});
-        }
-
-        for(uint v = 0; v < voters.length; v++)
-        {
-            createdBallot.voters[voters[v]] = Voter(true, false);
-        }
-
-        //create new already ended ballot
-        // ballots.push(Ballot(true, 2));
-        // Ballot storage endedBallot = ballots[ballots.length - 1];
-
-        // for(uint i = 0; i < 2; i++)
-        // {
-        //     endedBallot.candidates[i] = Candidate({name: candidateNames[i], voteCount: i*3 + 10});
-        // }
-
-        // for(uint v = 0; v < voters.length; v++)
-        // {
-        //     endedBallot.voters[voters[v]] = Voter(true, false);
-        // }
-
-        // endedBallot.isActive = false;
     }
 
     function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public{
@@ -84,24 +53,26 @@ contract VoteManager {
             createdBallot.voters[voters[v]] = Voter(true, false);
         }
 
-        lastBallotIndex = newIndex;
+        emit BallotCreation(newIndex);
     }
 
     function setSystemName(string memory x) public {
         systemName = x;
     }
 
-    //TODO: possible security issue 
     function vote(uint ballotId, uint voterId, uint candidateId) public {
         require(ballots[ballotId].voters[voterId].isAllowed, "There is no such voter.");
         require(!ballots[ballotId].voters[voterId].hasVoted, "This voter has already voted.");
 
         ballots[ballotId].voters[voterId].hasVoted = true;
         ballots[ballotId].candidates[candidateId].voteCount++;
+
+        emit Voted(ballotId, candidateId);
     }
 
     function endBallot(uint id) public onlyOwner {
         ballots[id].isActive = false;
+        emit BallotEnd(id);
     }
 
     function getBallots() public view returns(bool[] memory states, uint[] memory candidatesSizes) {
