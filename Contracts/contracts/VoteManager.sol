@@ -6,6 +6,7 @@ contract VoteManager {
     Ballot[] public ballots;
 
     event BallotCreation (
+        bytes32 indexed name,
         uint indexed ballot
     );
 
@@ -29,19 +30,19 @@ contract VoteManager {
     }
 
     struct Ballot {
+        bytes32 name;
         bool isActive;
         uint candidatesSize;
         mapping(uint => Candidate) candidates;
         mapping(uint => Voter) voters;  //key means voter id (e.g. 210210)
     }
 
-
     constructor() public {
         owner = msg.sender;
     }
 
-    function createBallot(bytes32[] memory candidateNames, uint[] memory voters) public{
-        uint newIndex = ballots.push(Ballot(true, candidateNames.length));
+    function createBallot(bytes32 name, bytes32[] memory candidateNames, uint[] memory voters) public{
+        uint newIndex = ballots.push(Ballot(name, true, candidateNames.length));
         Ballot storage createdBallot = ballots[newIndex - 1];
         for(uint i = 0; i < candidateNames.length; i++)
         {
@@ -53,7 +54,7 @@ contract VoteManager {
             createdBallot.voters[voters[v]] = Voter(true, false);
         }
 
-        emit BallotCreation(newIndex);
+        emit BallotCreation(name, newIndex);
     }
 
     function setSystemName(string memory x) public {
