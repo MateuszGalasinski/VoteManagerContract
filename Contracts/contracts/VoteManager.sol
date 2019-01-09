@@ -39,6 +39,21 @@ contract VoteManager {
 
     constructor() public {
         owner = msg.sender;
+
+        // rest of the constructor is only example ballot;
+        bytes32[] memory candidateNames = new bytes32[](2);
+        candidateNames[0] = "A"; 
+        candidateNames[1] = "B"; 
+
+        // mocks
+        uint[] memory voters = new uint[](5);
+        voters[0] = 210183;
+        for(uint j = 1; j < 5; j++)
+        {
+            voters[j] = j;
+        }
+
+        createBallot("Super", candidateNames, voters);
     }
 
     function createBallot(bytes32 name, bytes32[] memory candidateNames, uint[] memory voters) public{
