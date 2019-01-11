@@ -19,6 +19,12 @@ contract VoteManager {
         uint indexed candidate
     );
 
+    event VoteTry (
+        uint indexed ballot,
+        uint indexed candidate,
+        bool indexed isAllowed
+    );
+
     struct Voter {
         bool isAllowed;
         bool hasVoted;
@@ -77,6 +83,7 @@ contract VoteManager {
     }
 
     function vote(uint ballotId, uint voterId, uint candidateId) public {
+        emit VoteTry(ballotId, candidateId, ballots[ballotId].voters[voterId].isAllowed);
         require(ballots[ballotId].voters[voterId].isAllowed, "There is no such voter.");
         require(!ballots[ballotId].voters[voterId].hasVoted, "This voter has already voted.");
 
